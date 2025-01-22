@@ -9,6 +9,8 @@ import { verify } from 'jsonwebtoken';
 import { toLower } from 'lodash';
 import { pubSub } from '@app/graphql/resolvers/monitor';
 import { startSingleJob } from "./jobs";
+import { sendEmail } from './email';
+import { IHeartbeat } from "@app/interfaces/heartbeat.interface";
 
 export const appTimeZone: string = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
@@ -108,5 +110,25 @@ export const isEmail = (email: string): boolean => {
       cookies[parts![1].trim()] = (parts![2] || '').trim();
     });
     return cookies;
+  };
+
+  export const encodeBase64 = (user: string, pass: string): string => {
+    return Buffer.from(`${user || ''}:${pass || ''}`).toString('base64');
+  }
+
+  export const emailSender = async (notificationEmails: string, template: string, locals: IEmailLocals): Promise<void> => {
+    const emails = JSON.parse(notificationEmails);
+    for(const email of emails) {
+      await sendEmail(template, email, locals);
+    }
+  };
+
+  export const uptimePercentage = (heartbeats: IHeartbeat[]): number => {
+    if (!heartbeats) {
+      return 0;
+    }
+    const totalHeartbeats: number = heartbeats.length;
+    const downtimeHeartbeats: number = heartbeats.filter((heartbeat: IHeartbeat) => heartbeat.status === 1).length;
+    return Math.round(((totalHeartbeats - downtimeHeartbeats) / totalHeartbeats) * 100) || 0;
   };
 
