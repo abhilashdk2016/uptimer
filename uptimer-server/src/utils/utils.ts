@@ -11,6 +11,8 @@ import { pubSub } from '@app/graphql/resolvers/monitor';
 import { startSingleJob } from "./jobs";
 import { sendEmail } from './email';
 import { IHeartbeat } from "@app/interfaces/heartbeat.interface";
+import { ISSLMonitorDocument } from "@app/interfaces/ssl.interface";
+import { getAllUsersActiveSSLMonitors, getSSLMonitorById, sslStatusMonitor } from "@app/services/ssl.service";
 
 export const appTimeZone: string = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
@@ -132,3 +134,17 @@ export const isEmail = (email: string): boolean => {
     return Math.round(((totalHeartbeats - downtimeHeartbeats) / totalHeartbeats) * 100) || 0;
   };
 
+  export const startSSLMonitors = async (): Promise<void> => {
+    const list: ISSLMonitorDocument[] = await getAllUsersActiveSSLMonitors();
+  
+    for(const monitor of list) {
+      sslStatusMonitor(monitor, toLower(monitor.name));
+      await sleep(getRandomInt(300, 1000));
+    }
+  };
+
+  export const resumeSSLMonitors = async (monitorId: number): Promise<void> => {
+    const monitor: ISSLMonitorDocument = await getSSLMonitorById(monitorId);
+    sslStatusMonitor(monitor, toLower(monitor.name));
+    await sleep(getRandomInt(300, 1000));
+  };

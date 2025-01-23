@@ -19,7 +19,7 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import customFormat from 'dayjs/plugin/customParseFormat';
-import { enableAutoRefreshJob, startMonitors } from '@app/utils/utils';
+import { enableAutoRefreshJob, startMonitors, startSSLMonitors } from '@app/utils/utils';
 import { WebSocketServer, Server as WSServer } from 'ws';
 import { useServer } from "graphql-ws/use/ws";
 
@@ -124,6 +124,7 @@ export default class MonitorServer {
             this.httpServer.listen(SERVER_PORT, () => {
                 logger.info(`Server running on port ${SERVER_PORT}`);
                 startMonitors();
+                startSSLMonitors();
             })
         } catch (error) {
             logger.error('error' ,"startServer() error: ", error);
