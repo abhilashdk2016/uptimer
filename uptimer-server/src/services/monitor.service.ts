@@ -10,6 +10,8 @@ import { uptimePercentage } from "@app/utils/utils";
 import { HttpModel } from "@app/models/http.model";
 import { getMongoHeartBeatsByDuration, mongoStatusMonitor } from "./mongo.service";
 import { MongoModel } from "@app/models/mongo.model";
+import { getRedisHeartBeatsByDuration, redisStatusMonitor } from "./redis.service";
+import { RedisModel } from "@app/models/redis.model";
 
 const HTTP_TYPE = 'http';
 const TCP_TYPE = 'tcp';
@@ -182,6 +184,9 @@ const deleteMonitorTypeHeartBeats = async (monitorId: number,  type: string): Pr
     if(type === MONGO_TYPE) {
         model = MongoModel;
     }
+    if(type === REDIS_TYPE) {
+        model = RedisModel;
+    }
 
     if(model) {
         await model.destroy({
@@ -207,6 +212,7 @@ export const startCreatedMonitors = (monitor: IMonitorDocument, name: string, ty
             break;
         case REDIS_TYPE:
             console.log('redis', monitor.name, name);
+            redisStatusMonitor(monitor!, toLower(name));
             break;
     }
 }
@@ -227,6 +233,7 @@ export const getHeartbeats = async (type: string, monitorId: number, duration: n
             break;
         case REDIS_TYPE:
             console.log('redis');
+            heartbeats = await getRedisHeartBeatsByDuration(monitorId, duration);
             break;
     }
     return heartbeats;

@@ -34,6 +34,7 @@
     "nodemailer": "^6.9.16",
     "pg": "^8.13.1",
     "pino": "^9.6.0",
+    "redis": "^4.7.0",
     "sequelize": "^6.37.5",
     "typescript": "^5.7.2",
     "typescript-transform-paths": "^3.5.3",
