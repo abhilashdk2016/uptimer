@@ -112,13 +112,13 @@ export const useSocialLogin = (): IUserAuth => {
       if (result && result.data) {
         const { loginUser, authSocialUser } = result.data;
         dispatch({
-          type: 'dataUpdate',
+          type: 'DATA_UPDATE',
           payload: {
             user: authType === 'social' ? authSocialUser.user : loginUser.user,
             notifications: authType === 'social' ? authSocialUser.notifications : loginUser.notifications
           }
         });
-        router.push('/');
+        router.push('/status');
       }
     } catch (error) {
       errorToast('Invalid credentials');

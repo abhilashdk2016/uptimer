@@ -1,4 +1,5 @@
 'use client';
+import { IMonitorDocument } from "@/interfaces/monitor.interface";
 import { INotification } from "@/interfaces/notification.interface";
 import { InitialUpdateType, IUser } from "@/interfaces/user.interface";
 import { Context, createContext, Dispatch, FC, ReactElement, ReactNode, useReducer } from "react";
@@ -10,7 +11,7 @@ export interface StateProps {
 
 export interface DispatchProps {
     type: string;
-    payload: string | boolean | InitialUpdateType | null;
+    payload: string | boolean | InitialUpdateType | IMonitorDocument | null;
 }
 
 interface Props {

@@ -96,13 +96,13 @@ async function submitUserData(
       if (result && result.data) {
         const { registerUser, authSocialUser } = result.data;
         dispatch({
-          type: 'dataUpdate',
+          type: 'DATA_UPDATE',
           payload: {
             user: registerUser ? registerUser.user : authSocialUser.user,
             notifications: registerUser ? registerUser.notifications : authSocialUser.notifications
           }
         });
-        router.push('/');
+        router.push('/status');
       }
     } catch (error) {
       errorToast('Invalid credentials');

@@ -22,3 +22,5 @@ const TextAreaInput: FC<ITextInputProps> = (props): ReactElement => {
     />
   );
 };
+
+export default TextAreaInput;
