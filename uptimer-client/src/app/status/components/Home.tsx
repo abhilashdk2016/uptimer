@@ -4,6 +4,7 @@ import { renderButtons, renderCreateButton, renderRefreshButtons, renderTableAnd
 import { IMonitorState } from '@/interfaces/monitor.interface';
 import { useHome } from '../hooks/useHome';
 import MonitorSelectionModal from '@/components/MonitorSelectionModel';
+import HomeSkeleton from './HomeSkeleton';
 
 const Home: FC = (): ReactElement => {
   const {
@@ -33,6 +34,9 @@ const Home: FC = (): ReactElement => {
             }} />
       )}
       <div className="m-auto px-6 h-screen relative min-h-screen xl:container md:px-12 lg:px-6 flex-1">
+        {
+            loading && <HomeSkeleton />
+        }
         <>
         {
             !loading && monitors.length > 0 ? (

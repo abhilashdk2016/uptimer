@@ -7,6 +7,7 @@ import { Context, createContext, Dispatch, FC, ReactElement, ReactNode, useReduc
 export interface StateProps {
     user: IUser | null;
     notifications: INotification[];
+    monitor: IMonitorDocument | null;
 }
 
 export interface DispatchProps {
@@ -25,7 +26,8 @@ interface MonitorContextType {
 
 const initialValues = {
     user: null,
-    notifications: []
+    notifications: [],
+    monitor: null
 };
 
 export const MonitorContext: Context<MonitorContextType> = createContext<MonitorContextType>({
@@ -35,7 +37,8 @@ export const MonitorContext: Context<MonitorContextType> = createContext<Monitor
 
 const mainReducer = (state: StateProps, action: DispatchProps): StateProps => ({
     user: stateReducer(state, action).user,
-    notifications: stateReducer(state, action).notifications
+    notifications: stateReducer(state, action).notifications,
+    monitor: stateReducer(state, action).monitor,
 });
 
 export const MonitorProvider: FC<Props> = ({ children }): ReactElement => {
@@ -62,6 +65,10 @@ const stateReducer = (state: StateProps, action: DispatchProps): StateProps => {
                 ...state,
                 user: action.payload as IUser
             };
+        case "MONITOR":
+            return {
+                ...state, monitor: action.payload as IMonitorDocument
+            }
         default:
             return state;
     }

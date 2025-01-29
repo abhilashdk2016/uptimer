@@ -1,18 +1,29 @@
 import Button from "@/components/Button";
 import { HomeTableProps, IMonitorDocument } from "@/interfaces/monitor.interface";
 import clsx from "clsx";
-import { FC, JSX, ReactElement } from "react";
+import { FC, JSX, ReactElement, useContext } from "react";
 import { FaArrowDown, FaArrowUp, FaCircleNotch, FaPlay } from "react-icons/fa";
 import HomeTableBtnGroup from "./HomeTableBtnGroup";
 import ResponseCharts from "@/components/ResponseCharts";
+import { useSearchParams, useRouter } from "next/navigation";
+import { MonitorContext } from "@/context/MonitorContext";
 
 const DEFAULT_DURATION = 24;
 
 const HomeGrid: FC<HomeTableProps> = ({ monitors, limit, autoRefreshLoading }): ReactElement => {
 
+  const { dispatch } = useContext(MonitorContext);
+  const searchParams = useSearchParams();
+  const router = useRouter();
   const navigateToStatusPage = (monitor: IMonitorDocument): void => {
-    
-  }
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('active', JSON.stringify(monitor.active));
+    router.push(`/uptime/view/${monitor.type}/${monitor.id}/${DEFAULT_DURATION}?${params}`);
+    dispatch({
+      type: 'MONITOR',
+      payload: monitor
+    });
+  };
 
   const monitorIcon = (monitor: IMonitorDocument): JSX.Element => {
     if (monitor.active && monitor.status === 0) {

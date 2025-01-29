@@ -9,9 +9,9 @@ export const HeartBeatResolver = {
             const { req } = contextValue;
             authenticateGraphQLRoute(req);
             const { monitorId, type, duration } = args;
-            const heartBeats: IHeartbeat[] = await getHeartbeats(type, parseInt(monitorId), parseInt(duration));
+            const heartbeats: IHeartbeat[] = await getHeartbeats(type, parseInt(monitorId), parseInt(duration));
             return {
-                heartBeats
+                heartbeats
             }
         }
     },

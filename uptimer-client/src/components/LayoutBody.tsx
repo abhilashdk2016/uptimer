@@ -35,7 +35,7 @@ const LayoutBody = ({ children }: Readonly<{ children: ReactNode }>): ReactEleme
         </div>
         <div className='hidden absolute bottom-[20px] p-4 cursor-pointer lg:flex' 
             onClick={() => setToggleSidebar(!toggleSidebar)}>
-            { !toggleSidebar ? <FaAngleDoubleLeft /> : <FaAngleDoubleRight /> }
+            { toggleSidebar ? <FaAngleDoubleLeft /> : <FaAngleDoubleRight /> }
         </div>
     </div>
   )

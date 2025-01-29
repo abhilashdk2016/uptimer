@@ -3,10 +3,12 @@ import { HomeTableProps, IMonitorDocument } from "@/interfaces/monitor.interface
 import { convertFrequency, timeFromNow } from "@/utils/utils";
 import clsx from "clsx";
 import { upperCase } from "lodash";
-import { FC, ReactElement } from "react";
+import { FC, ReactElement, useContext } from "react";
 import { FaArrowDown, FaArrowUp, FaCircleNotch, FaPlay } from "react-icons/fa";
 import HomeTableBtnGroup from "./HomeTableBtnGroup";
 import HealthBar from "@/components/HealthBar";
+import { useSearchParams, useRouter } from "next/navigation";
+import { MonitorContext } from "@/context/MonitorContext";
 
 const DEFAULT_DURATION = 24;
 
@@ -15,9 +17,17 @@ const HomeTable: FC<HomeTableProps> = ({
   limit,
   autoRefreshLoading,
 }): ReactElement => {
-
+  const { dispatch } = useContext(MonitorContext);
+  const searchParams = useSearchParams();
+  const router = useRouter();
   const navigateToStatusPage = (monitor: IMonitorDocument): void => {
-    // 24 is the default duration
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('active', JSON.stringify(monitor.active));
+    router.push(`/uptime/view/${monitor.type}/${monitor.id}/${DEFAULT_DURATION}?${params}`);
+    dispatch({
+      type: 'MONITOR',
+      payload: monitor
+    });
   };
   return (
     <div className="relative overflow-x-auto mt-10 lg:mt-0">
