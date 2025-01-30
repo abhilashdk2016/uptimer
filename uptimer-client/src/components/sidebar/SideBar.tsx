@@ -53,7 +53,7 @@ const SideBar: FC<{ type: string}> = ({ type }): ReactElement => {
             icon={<FaUser />} 
             submenuTexts={
                 [
-                    { name: 'All Contact Groups', url: '/contacts' },
+                    { name: 'All Contact Groups', url: '/contact' },
                     { name: 'New Contact Group', url: '/contact/create' },
                     
                 ]
